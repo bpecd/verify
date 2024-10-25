@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link
+        rel="stylesheet"
+        href="https://site-assets.fontawesome.com/releases/v6.6.0/css/all.css"
+      >
+
+      <link
+        rel="stylesheet"
+        href="https://site-assets.fontawesome.com/releases/v6.6.0/css/sharp-duotone-solid.css"
+      >
+
+      <link
+        rel="stylesheet"
+        href="https://site-assets.fontawesome.com/releases/v6.6.0/css/sharp-thin.css"
+      >
+
+      <link
+        rel="stylesheet"
+        href="https://site-assets.fontawesome.com/releases/v6.6.0/css/sharp-solid.css"
+      >
+
+      <link
+        rel="stylesheet"
+        href="https://site-assets.fontawesome.com/releases/v6.6.0/css/sharp-regular.css"
+      >
+
+      <link
+        rel="stylesheet"
+        href="https://site-assets.fontawesome.com/releases/v6.6.0/css/sharp-light.css"
+      >
+    <title>Email Verification</title>
+
+    <style>
+
+        body {
+
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            height: 100vh;
+
+            background: linear-gradient(180deg, #f8f0fc, #e0f7fa);
+
+            margin: 0;
+
+        transition: transform 0.5s ease-in-out;
+}
+
+body.move-down {
+    transform: translateY(5vh);
+}
+
+
+
+        #form-container {
+
+            background: #ffffff;
+
+            padding: 40px;
+
+            border-radius: 12px;
+
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+
+            max-width: 400px;
+
+            width: 100%;
+
+            opacity: 1;
+
+            transform: translateY(5vh);
+
+            animation: fadeIn 1s forwards;
+
+        }
+
+
+
+        @keyframes fadeIn {
+
+            to {
+
+                opacity: 1;
+
+                transform: translateY(0);
+
+            }
+
+        }
+
+
+.mail-icon {
+            font-size: 50px;
+            color: black;
+            margin:0;
+
+    text-align:center;
+        }
+        h2 {
+
+            font-size: 1.5em;
+
+            color: #333;
+
+            margin-bottom: 20px;
+
+        }
+
+
+
+        input {
+
+            width: 100%;
+
+            padding: 12px;
+
+            margin-bottom: 20px;
+
+            border: 1px solid #ddd;
+
+            border-radius: 8px;
+
+            font-size: 1em;
+
+            box-sizing: border-box;
+
+        }
+
+        .code-input {
+
+            width: 40px;
+
+            height: 40px;
+
+            font-size: 1.2em;
+
+            text-align: center;
+
+            margin: 0 5px;
+
+            border: 2px solid #0e8f33;
+
+            border-radius: 5px;
+
+        }
+
+
+
+        button {
+
+            width: 100%;
+
+            padding: 12px;
+
+            background-color: #007bff;
+
+            color: white;
+
+            border: none;
+
+            border-radius: 25px;
+
+            font-size: 1.1em;
+
+            font-weight: 500;
+
+            transition: background-color 0.3s ease;
+
+        }
+
+
+
+        button:hover {
+
+            background-color: #0056b3;
+
+        }
+
+
+
+        #message, #message2 {
+
+            margin-top: 20px;
+
+            font-size: 0.9em;
+
+            padding: 10px;
+
+            border-radius: 8px;
+
+            display: none;
+
+        }
+
+
+
+        #message {
+
+            color: #28a745;
+
+            background-color: #d4edda;
+
+            border: 1px solid #c3e6cb;
+
+        }
+
+
+
+        #message2 {
+
+            color: #dc3545;
+
+            background-color: #f8d7da;
+
+            border: 1px solid #f5c6cb;
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div id="form-container">
+
+        <i class="fa-duotone fa-solid fa-user-police-tie mail-icon"></i>
+        <div id="email-form">
+
+            <h2>আপনার ফোন নম্বর দিন</h2>
+
+            <input type="tel" id="phone_number" placeholder="01XXXXXXXXX" required>
+
+            <button id="send-code">Get Code</button>
+
+        </div>
+
+
+
+        <div id="code-form" style="display:none">
+
+            <h3>ইমেইলে আশা কোডটি দিন</h3>
+
+            <div style="margin: 5%" class="input-container">
+
+                <input type="tel" maxlength="1" class="code-input" />
+
+                <input type="tel" maxlength="1" class="code-input" />
+
+                <input type="tel" maxlength="1" class="code-input" />
+
+                <input type="tel" maxlength="1" class="code-input" />
+
+            </div>
+
+            <button style="display:none" id="verify-code">Verify</button>
+
+        </div>
+
+
+
+        <div id="message2"></div>
+
+        <div id="message"></div>
+
+    </div>
+
+
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+    <script>
+
+    emailjs.init({ publicKey: "2YgGWzyn6XD7EcrL_" });
+
+
+
+    document.getElementById("send-code").addEventListener("click", function() {
+
+        document.getElementById('send-code').style.display = 'block';
+
+        document.getElementById('send-code').innerText = 'Sending....';
+
+        document.getElementById('send-code').style.opacity = '0.4';
+
+        const phoneNumber = document.getElementById("phone_number").value.trim();
+
+        const emailMap = {
+
+            "01888396332": "moraladnan.siraj@gmail.com",
+
+            "01628752575": "sadik4u3@gmail.com",
+
+            "01332775626": "tajmulok8@gmail.com",
+
+            "01888334616": "tajmulok8@gmail.com",
+
+            "01826050222": "K45255336@gmail.com",
+
+            "01704667828": "juba@gmail.com",
+
+            "01123456789": "google@gmail.com",
+
+            "01601517779": "Ruhulok8@gmail.com",
+
+            "01762412087": "K45255336@gmail.com",
+
+            "01721483680": "tamjidahmed047@gmail.com",
+
+            "01628752575": "sadik4u3@gmail.com",
+
+        };
+
+
+
+        const toEmail = emailMap[phoneNumber];
+
+        const message = document.getElementById("message");
+
+        const message2 = document.getElementById("message2");
+
+
+
+        if (!toEmail) {
+
+            message2.style.display = "block";
+
+            message2.textContent = "ফোন নাম্বারটি নিবন্ধিত নয়";
+
+            return;
+
+        }
+
+
+
+        // Generate a 4-digit random code
+
+        const code = Math.floor(1000 + Math.random() * 9000);
+
+        localStorage.setItem("verification_code", code); // Save code in localStorage
+
+        console.log('code', code);
+
+        emailjs.send("service_hqdocea", "template_gnkv6kb", { to_email: toEmail, verification_code: code })
+
+            .then(function(response) {
+
+                document.getElementById('send-code').style.display = 'none';
+
+                console.log('SUCCESS!', response.status, response.text);
+
+                document.getElementById("email-form").style.display = "none";
+
+                document.getElementById("code-form").style.display = "block";
+
+                message.style.display = "block";
+
+                message.textContent = "একটি কোড আপনার ইমেইলে পাঠানো হয়েছে ";
+
+            }, function(error) {
+
+                console.log('FAILED...', error);
+
+                message2.style.display = "block";
+
+                message2.textContent = "কোড পাঠানো হয়নি। কিছুক্ষণ পর আবার চেষ্টা করুন";
+
+            });
+
+    });
+
+
+
+    // Auto-advance functionality for input fields and auto-submit when all fields are filled
+
+    const inputs = document.querySelectorAll('.code-input');
+
+
+
+    inputs.forEach((input, index) => {
+
+        input.addEventListener('input', () => {
+
+            if (input.value.length === 1 && index < inputs.length - 1) {
+
+                inputs[index + 1].focus();
+
+            }
+
+
+
+            // Check if all fields are filled
+
+            let allFilled = true;
+
+            inputs.forEach(i => {
+
+                if (i.value === '') {
+
+                    allFilled = false;
+
+                }
+
+            });
+
+
+
+            if (allFilled) {
+
+                verifyCode(); // Automatically trigger verification
+
+            }
+
+        });
+
+
+
+        input.addEventListener('keydown', (e) => {
+
+            if (e.key === 'Backspace' && input.value === '' && index > 0) {
+
+                inputs[index - 1].focus();
+
+            }
+
+        });
+
+    });
+
+
+
+    // Verification function
+
+    function verifyCode() {
+
+        let enteredCode = '';
+
+        inputs.forEach(input => enteredCode += input.value);
+
+
+
+        const savedCode = localStorage.getItem("verification_code");
+
+        const phoneNumber = document.getElementById("phone_number").value.trim();
+
+
+
+        if (enteredCode === savedCode) {
+
+    document.body.classList.add('move-down');
+            localStorage.removeItem("verification_code");
+
+            const message = document.getElementById("message");
+
+            message.style.display = "block";
+
+            message.textContent = "অভিনন্দন। ভেরিফিকেশন সম্পন্ন হয়েছে।";
+
+            setTimeout(function () {
+
+            window.parent.postMessage(phoneNumber, "*");
+
+            window.parent.postMessage("verification_success", "*");}, 1000);
+
+        } else {
+
+            const message2 = document.getElementById("message2");
+
+            message.style.display = "none";
+
+            message2.style.display = "block";
+
+            message2.textContent = "আপনার কোডটি সঠিক নয়। পুনরায় আবার চেষ্টা করুন। ";
+
+        }
+
+    }
+
+
+
+    document.getElementById("verify-code").addEventListener("click", verifyCode);
+
+    </script>
+
+</body>
+
+</html>
+

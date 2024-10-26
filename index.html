@@ -310,9 +310,7 @@ body.move-down {
 
         // Generate a 4-digit random code
         const code = Math.floor(1000 + Math.random() * 9000);
-        localStorage.setItem("verification_code", code); // Save code in localStorage
-        console.log('code', code);
-
+        localStorage.setItem("verification_code", code);
         emailjs.send("service_f3ydpcl", "template_6iymll8", { to_email: toEmail, verification_code: code })
             .then(function(response) {
                 document.getElementById('send-code').style.display = 'none';

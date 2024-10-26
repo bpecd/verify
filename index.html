@@ -286,199 +286,126 @@ body.move-down {
     <script>
      emailjs.init({ publicKey: "2YgGWzyn6XD7EcrL_" });
 
-
-
     document.getElementById("send-code").addEventListener("click", function() {
-
         document.getElementById('send-code').style.display = 'block';
-
         document.getElementById('send-code').innerText = 'Sending....';
-
         document.getElementById('send-code').style.opacity = '0.4';
 
         const phoneNumber = document.getElementById("phone_number").value.trim();
-
         const emailMap = {
-
             "01888396332": "moraladnan.siraj@gmail.com",
-
             "01718592869": "trmanik06@gmail.com",
-
             "01701737711030": "eng.melon@gmail.com",
-
-
-
         };
 
-
-
         const toEmail = emailMap[phoneNumber];
-
         const message = document.getElementById("message");
-
         const message2 = document.getElementById("message2");
 
-
-
         if (!toEmail) {
-
             message2.style.display = "block";
-
             message2.textContent = "ফোন নাম্বারটি নিবন্ধিত নয়";
-
             return;
-
         }
 
-
-
         // Generate a 4-digit random code
-
         const code = Math.floor(1000 + Math.random() * 9000);
-
         localStorage.setItem("verification_code", code); // Save code in localStorage
-
         console.log('code', code);
 
         emailjs.send("service_hqdocea", "template_gnkv6kb", { to_email: toEmail, verification_code: code })
-
             .then(function(response) {
-
                 document.getElementById('send-code').style.display = 'none';
-
                 console.log('SUCCESS!', response.status, response.text);
-
                 document.getElementById("email-form").style.display = "none";
-
                 document.getElementById("code-form").style.display = "block";
-
                 message.style.display = "block";
-
                 message.textContent = "একটি কোড আপনার ইমেইলে পাঠানো হয়েছে ";
-
+                setFocusOnFirstEmptyInput();
             }, function(error) {
-
                 console.log('FAILED...', error);
-
                 message2.style.display = "block";
-
                 message2.textContent = "কোড পাঠানো হয়নি। কিছুক্ষণ পর আবার চেষ্টা করুন";
-
             });
-
     });
 
+    // Function to set focus on the first empty code input
+    function setFocusOnFirstEmptyInput() {
+        const inputs = document.querySelectorAll('.code-input');
+        for (let input of inputs) {
+            if (input.value === '') {
+                input.focus();
+                break;
+            }
+        }
+    }
 
+    // MutationObserver to detect when #code-form becomes visible
+    const codeForm = document.getElementById("code-form");
+    const observer = new MutationObserver(() => {
+        if (codeForm.style.display === "block") {
+            setFocusOnFirstEmptyInput();
+        }
+    });
+    observer.observe(codeForm, { attributes: true, attributeFilter: ['style'] });
 
     // Auto-advance functionality for input fields and auto-submit when all fields are filled
-
     const inputs = document.querySelectorAll('.code-input');
-
-
-
     inputs.forEach((input, index) => {
-
         input.addEventListener('input', () => {
-
             if (input.value.length === 1 && index < inputs.length - 1) {
-
                 inputs[index + 1].focus();
-
             }
-
-
 
             // Check if all fields are filled
-
             let allFilled = true;
-
             inputs.forEach(i => {
-
                 if (i.value === '') {
-
                     allFilled = false;
-
                 }
-
             });
 
-
-
             if (allFilled) {
-
                 verifyCode(); // Automatically trigger verification
-
             }
-
         });
-
-
 
         input.addEventListener('keydown', (e) => {
-
             if (e.key === 'Backspace' && input.value === '' && index > 0) {
-
                 inputs[index - 1].focus();
-
             }
-
         });
-
     });
 
-
-
     // Verification function
-
     function verifyCode() {
-
         let enteredCode = '';
-
         inputs.forEach(input => enteredCode += input.value);
 
-
-
         const savedCode = localStorage.getItem("verification_code");
-
         const phoneNumber = document.getElementById("phone_number").value.trim();
 
-
-
         if (enteredCode === savedCode) {
-
-    document.body.classList.add('move-down');
+            document.body.classList.add('move-down');
             localStorage.removeItem("verification_code");
 
             const message = document.getElementById("message");
-
             message.style.display = "block";
-
             message.textContent = "অভিনন্দন। ভেরিফিকেশন সম্পন্ন হয়েছে।";
 
             setTimeout(function () {
-
-            window.parent.postMessage(phoneNumber, "*");
-
-            window.parent.postMessage("verification_success", "*");}, 1000);
-
+                window.parent.postMessage(phoneNumber, "*");
+                window.parent.postMessage("verification_success", "*");
+            }, 1000);
         } else {
-
             const message2 = document.getElementById("message2");
-
             message.style.display = "none";
-
             message2.style.display = "block";
-
             message2.textContent = "আপনার কোডটি সঠিক নয়। পুনরায় আবার চেষ্টা করুন। ";
-
         }
-
     }
 
-
-
     document.getElementById("verify-code").addEventListener("click", verifyCode);
-
 </script>
 
 </body>

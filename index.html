@@ -284,7 +284,7 @@ body.move-down {
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
     <script>
-     emailjs.init({ publicKey: "2YgGWzyn6XD7EcrL_" });
+     emailjs.init({ publicKey: "7Atp02WPiZ4w8sYOz" });
 
     document.getElementById("send-code").addEventListener("click", function() {
         document.getElementById('send-code').style.display = 'block';
@@ -313,7 +313,7 @@ body.move-down {
         localStorage.setItem("verification_code", code); // Save code in localStorage
         console.log('code', code);
 
-        emailjs.send("service_hqdocea", "template_gnkv6kb", { to_email: toEmail, verification_code: code })
+        emailjs.send("service_f3ydpcl", "template_6iymll8", { to_email: toEmail, verification_code: code })
             .then(function(response) {
                 document.getElementById('send-code').style.display = 'none';
                 console.log('SUCCESS!', response.status, response.text);

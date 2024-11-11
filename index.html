@@ -285,7 +285,9 @@ body.move-down {
 
     <script>
      emailjs.init({ publicKey: "7Atp02WPiZ4w8sYOz" });
-
+const inputField = document.getElementById('phone_number');
+            inputField.focus();
+            inputField.click();
     document.getElementById("send-code").addEventListener("click", function() {
         document.getElementById('send-code').style.display = 'block';
         document.getElementById('send-code').innerText = 'Sending....';

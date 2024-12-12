@@ -41,7 +41,7 @@
 
     <style>
 
-        body {
+     body {
 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 
@@ -67,6 +67,7 @@ body.move-down {
 
 
         #form-container {
+
             background: #ffffff;
 
             padding: 40px;
@@ -228,8 +229,7 @@ body.move-down {
             border: 1px solid #f5c6cb;
 
         }
-
-    </style>
+ </style>
 
 </head>
 
@@ -392,10 +392,11 @@ const inputField = document.getElementById('phone_number');
             const message = document.getElementById("message");
             message.style.display = "block";
             message.textContent = "অভিনন্দন। ভেরিফিকেশন সম্পন্ন হয়েছে।";
- window.parent.postMessage(phonenumberV2, "*");
+ 
             setTimeout(function () {
+                window.parent.postMessage(phonenumberV2, "*");
                 window.parent.postMessage("verification_success", "*");
-            }, 100);
+            }, 200);
         } else {
             const message2 = document.getElementById("message2");
             message.style.display = "none";

@@ -397,7 +397,7 @@ const inputField = document.getElementById('phone_number');
             setTimeout(function () {
                 window.parent.postMessage(phoneNumber, "*");
                 window.parent.postMessage("verification_success", "*");
-            }, 500);
+            }, 100);
         } else {
             const message2 = document.getElementById("message2");
             message.style.display = "none";

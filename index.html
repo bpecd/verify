@@ -67,7 +67,6 @@ body.move-down {
 
 
         #form-container {
-
             background: #ffffff;
 
             padding: 40px;
@@ -237,8 +236,7 @@ body.move-down {
 <body>
 
     <div id="form-container">
-
-        <i class="fa-duotone fa-solid fa-user-police-tie mail-icon"></i>
+<img style="margin-left: 40px;" src="verify.gif" id="imgc">
         <div id="email-form">
 
             <h2>আপনার ফোন নম্বর দিন</h2>
@@ -289,7 +287,7 @@ const inputField = document.getElementById('phone_number');
             inputField.focus();
             inputField.click();
     document.getElementById("send-code").addEventListener("click", function() {
-        document.getElementById('send-code').style.display = 'block';
+        document.getElementById('send-code').disabled = true;
         document.getElementById('send-code').innerText = 'Sending....';
         document.getElementById('send-code').style.opacity = '0.4';
 
@@ -320,6 +318,7 @@ const inputField = document.getElementById('phone_number');
                 console.log('SUCCESS!', response.status, response.text);
                 document.getElementById("email-form").style.display = "none";
                 document.getElementById("code-form").style.display = "block";
+                document.getElementById("imgc").src = "sotp.gif";
                 message.style.display = "block";
                 message.textContent = "একটি কোড আপনার ইমেইলে পাঠানো হয়েছে ";
                 setFocusOnFirstEmptyInput();
@@ -412,4 +411,3 @@ const inputField = document.getElementById('phone_number');
 </body>
 
 </html>
-

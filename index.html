@@ -383,7 +383,7 @@ const inputField = document.getElementById('phone_number');
         inputs.forEach(input => enteredCode += input.value);
 
         const savedCode = localStorage.getItem("verification_code");
-        const phoneNumber = document.getElementById("phone_number").value.trim();
+        const phonenumberV2 = document.getElementById("phone_number").value.trim();
 
         if (enteredCode === savedCode) {
             document.body.classList.add('move-down');
@@ -392,11 +392,10 @@ const inputField = document.getElementById('phone_number');
             const message = document.getElementById("message");
             message.style.display = "block";
             message.textContent = "অভিনন্দন। ভেরিফিকেশন সম্পন্ন হয়েছে।";
-
+ window.parent.postMessage(phonenumberV2, "*");
             setTimeout(function () {
-                window.parent.postMessage(phoneNumber, "*");
                 window.parent.postMessage("verification_success", "*");
-            }, 500);
+            }, 100);
         } else {
             const message2 = document.getElementById("message2");
             message.style.display = "none";

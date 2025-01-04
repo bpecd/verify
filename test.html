@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Google Sheets Editor</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f9f9f9;
+    }
+    .container {
+      width: 400px;
+      background: #ffffff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+    }
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+    input, button, select {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #result {
+      text-align: center;
+      margin-top: 10px;
+      color: green;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Google Sheets Editor</h2>
+    <form id="sheetForm">
+      <label for="sheetId">Google Sheet ID:</label>
+      <input type="text" id="sheetId" placeholder="Enter Sheet ID" required>
+
+      <label for="sheetName">Sheet Name:</label>
+      <input type="text" id="sheetName" placeholder="Enter Sheet Name" required>
+
+      <label for="action">Action:</label>
+      <select id="action">
+        <option value="updateCell">Update Cell</option>
+        <option value="deleteRows">Delete Rows</option>
+      </select>
+
+      <div id="cellUpdateFields">
+        <label for="cellAddress">Cell Address (Row, Column):</label>
+        <input type="number" id="row" placeholder="Row Number" required>
+        <input type="number" id="column" placeholder="Column Number" required>
+
+        <label for="value">New Value:</label>
+        <input type="text" id="value" placeholder="Enter New Value">
+      </div>
+
+      <div id="deleteRowFields" style="display: none;">
+        <label for="startRow">Start Row:</label>
+        <input type="number" id="startRow" placeholder="Enter Start Row">
+        <label for="numRows">Number of Rows to Delete:</label>
+        <input type="number" id="numRows" placeholder="Enter Number of Rows">
+      </div>
+
+      <button type="submit">Submit</button>
+    </form>
+    <p id="result"></p>
+  </div>
+
+  <script>
+    const form = document.getElementById('sheetForm');
+    const actionSelect = document.getElementById('action');
+    const cellUpdateFields = document.getElementById('cellUpdateFields');
+    const deleteRowFields = document.getElementById('deleteRowFields');
+    const resultDisplay = document.getElementById('result');
+
+    // Toggle input fields based on the selected action
+    actionSelect.addEventListener('change', () => {
+      if (actionSelect.value === 'updateCell') {
+        cellUpdateFields.style.display = 'block';
+        deleteRowFields.style.display = 'none';
+      } else {
+        cellUpdateFields.style.display = 'none';
+        deleteRowFields.style.display = 'block';
+      }
+    });
+
+    // Handle form submission
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const sheetId = document.getElementById('sheetId').value;
+      const sheetName = document.getElementById('sheetName').value;
+      const action = document.getElementById('action').value;
+
+      const payload = { sheetId, sheetName, action };
+
+      if (action === 'updateCell') {
+        payload.row = parseInt(document.getElementById('row').value, 10);
+        payload.column = parseInt(document.getElementById('column').value, 10);
+        payload.value = document.getElementById('value').value;
+      } else if (action === 'deleteRows') {
+        payload.startRow = parseInt(document.getElementById('startRow').value, 10);
+        payload.numRows = parseInt(document.getElementById('numRows').value, 10);
+      }
+
+      try {
+        const response = await fetch('https://script.google.com/macros/s/AKfycbxcPqAV-6lxMCBf5gFltS-37qzkPrPRvWYE3NpdDDm_jHhtMx3-hIBmb60Qrcngils/exec', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload),
+        });
+
+        const result = await response.text();
+        resultDisplay.textContent = result;
+      } catch (error) {
+        resultDisplay.textContent = 'Error: ' + error.message;
+      }
+    });
+  </script>
+</body>
+</html>

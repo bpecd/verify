@@ -258,7 +258,7 @@ message2.style.display = "none";
                 message.style.display = "block";
                 message.style.textAlign = "justify";
                 
-                message.innerHTML = `একটি কোড আপনার ইমেইলে <span id="mail">${email}</span> পাঠানো হয়েছে।`;
+                message.innerHTML = `একটি কোড আপনার ইমেইলে পাঠানো হয়েছে। mail: <span id="mail">${email}</span>`;
                 document.getElementById("popup").classList.remove("active");
 
                 document.querySelector('.code-input').focus();

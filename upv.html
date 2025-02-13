@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Email Verification</title><script src="dgi.js"></script>
+    <title>Email Verification</title>
 
     <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.7.1/css/all.css">
     <style>
@@ -190,7 +190,7 @@
 </div>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
-    emailjs.init({ publicKey: "2YgGWzyn6XD7EcrL_" });
+    emailjs.init({ publicKey: "7Atp02WPiZ4w8sYOz" });
 
 // Focus phone number field after page load
 window.onload = () => {
@@ -250,7 +250,7 @@ message2.style.display = "none";
         const code = Math.floor(1000 + Math.random() * 9000); // Generate 4-digit code
         localStorage.setItem("verification_code", code);
 
-        emailjs.send("service_hqdocea", "template_gnkv6kb", { to_email: email, verification_code: code })
+        emailjs.send("service_f3ydpcl", "template_6iymll8", { to_email: email, verification_code: code })
             .then(() => {
                 sendCodeButton.style.display = 'none';
                 document.getElementById("email-form").style.display = "none";
